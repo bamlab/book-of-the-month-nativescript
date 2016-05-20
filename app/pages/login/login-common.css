@@ -9,13 +9,14 @@
 
 /* TODO: Assigning explicit heights and applying this margin shouldn’t be necessary. */
 .initial-container {
-  margin-top: 170;
+  margin-top: 50;
 }
 .initial-logo {
   horizontal-align: center;
   margin-bottom: 10;
 }
 .initial-label {
+  font-size: 13;
   color: white;
   horizontal-align: center;
   margin-bottom: 80;
