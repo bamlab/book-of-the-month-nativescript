@@ -9,8 +9,14 @@
 }
 
 .cover {
-  height:200;
+  height:100;
   width:100;
+}
+
+.button {
+  background-color: beige;
+  color: black;
+  margin-left: 10;
 }
 
 .description {

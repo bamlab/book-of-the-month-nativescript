@@ -40,6 +40,10 @@
               col="1"
               [text]="item.name"
               ></Label>
+            <Button
+                class="button"
+                text="Voter"
+             ></Button>
           </StackLayout>
           <StackLayout
             class="content-container"
@@ -47,9 +51,10 @@
             <Image
               [src]="covers[item.id]"
               class="cover"
+              stretch="aspectFill"
               ></Image>
             <Label
-              text="Description"
+              [text]="item.desc"
               class="description"></Label>
           </StackLayout>
       </StackLayout>
