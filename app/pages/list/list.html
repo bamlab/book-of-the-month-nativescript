@@ -32,7 +32,9 @@
       <GridLayout
         columns="auto, *, auto"
         class="grocery-list-item-container"
-        [opacity]="item.done ? '0.8' : '1'">
+        [opacity]="item.done ? '0.8' : '1'"
+        (tap)="toggleVote(item)"
+        >
         <Image
           col="0"
           [src]="covers[item.id]"
