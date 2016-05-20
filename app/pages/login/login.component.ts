@@ -31,18 +31,17 @@ export class LoginPage implements OnInit {
   ngOnInit() {
     this.page.actionBarHidden = true;
 
-    this.webView.on(webViewModule.WebView.loadFinishedEvent, function (args: webViewModule.LoadEventData) {
-        console.log('Load finished');
+    const webView = this.page.getViewById('webView');
 
-        let message;
-        if (!args.error) {
-            message = "WebView finished loading " + args.url;
+    webView.on(webViewModule.WebView.loadFinishedEvent, function (args: webViewModule.LoadEventData) {
+        const url = args.url;
+        console.log('Load finished' + url);
+        const callbackUrl = 'https://trello.com/done#token=';
+        if (url.indexOf(callbackUrl) === 0) {
+          const token = url.substr(String(callbackUrl).length);
+          console.log('Getting token' + token);
+          this._router.navigate(["List"]);
         }
-        else {
-            message = "Error loading " + args.url + ": " + args.error;
-        }
-
-        console.log(message);
     });
   }
 
