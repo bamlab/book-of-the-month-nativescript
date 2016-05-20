@@ -35,7 +35,7 @@
         [opacity]="item.done ? '0.8' : '1'">
         <Image
           col="0"
-          [src]="item.done ? 'res://checked' : 'res://unchecked'"
+          [src]="covers[item.id]"
           class="grocery-list-check-box"
           ></Image>
         <Label

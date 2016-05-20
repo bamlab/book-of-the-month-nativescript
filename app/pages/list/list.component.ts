@@ -12,6 +12,7 @@ import {BookListService} from "../../shared/books/book-list.service";
 })
 export class ListPage implements OnInit {
   bookList;
+  covers;
 
   isLoading = false;
   listLoaded = false;
@@ -29,13 +30,23 @@ export class ListPage implements OnInit {
   load() {
     this.isLoading = true;
     this.bookList = [];
+    this.covers = {};
 
     this._bookListService.load()
       .subscribe(books => {
         console.log("loaded " + books.length + "books");
         this.bookList = books;
-        this.isLoading = false;
-        this.listLoaded = true;
+
+        return this._bookListService.loadCovers(books)
+        .subscribe(covers => {
+          covers.forEach((cover) => {
+            this.covers[cover.id] = cover.url;
+          });
+          console.log(this.covers);
+
+          this.isLoading = false;
+          this.listLoaded = true;
+        });
       });
   }
 
