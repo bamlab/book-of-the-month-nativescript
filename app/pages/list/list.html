@@ -13,7 +13,7 @@
     <!-- Wrap the image in a StackLayout to give it a bigger tap target -->
     <StackLayout
       col="2"
-      >
+      (tap)="showMenu()">
       <Image
         src="res://menu"
         stretch="none"
@@ -21,7 +21,7 @@
     </StackLayout>
   </GridLayout>
 
-  <!-- Row: The main book list view -->
+  <!-- Row: The main grocery list view -->
   <ListView
     row="1"
     [items]="bookList"
