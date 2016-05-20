@@ -62,6 +62,23 @@ export class ListPage implements OnInit {
     });
   }
 
+  toggleVote(card) {
+    var member = this._bookListService.getAuthenticatedMember()
+      .subscribe(member => {
+        console.log('Member: ',member);
+        if (card.idMembersVoted.indexOf(member.id) !== -1) {
+          console.log('Unvote');
+          this._bookListService.unvote(card.id, member.id)
+          .subscribe();
+        } else {
+          console.log('Vote');
+          this._bookListService.vote(card.id, member.id)
+          .subscribe();
+        }
+      });
+
+  }
+
   logoff() {
     this._router.navigate(["Login"]);
   }

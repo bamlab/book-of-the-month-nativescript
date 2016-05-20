@@ -52,6 +52,42 @@ export class BookListService {
     .catch(this.handleErrors);
   }
 
+  //TODO move this method to user.service.ts
+  getAuthenticatedMember() {
+    console.log("Get authenticated member info");
+    return this._http.get("https://api.trello.com/1/members/me?key=990762e5cb22372d9d958e72572863a9&token=a4ba1ac9f88ac722b1d986991d352c3b641cfa88ae3986e30fbbb9baa5e85529", {
+      headers: this.getHeaders()
+    })
+    .map(res => res.json())
+    .map(data => {
+      console.log("Member fetched:" + data);
+      return data;
+    })
+    .catch(this.handleErrors);
+  }
+
+  vote(cardId, memberId) {
+    console.log("API POST to vote for a book...");
+    return this._http.post("https://api.trello.com/1/cards/" + cardId + "/membersVoted?value="+ memberId +"&key=990762e5cb22372d9d958e72572863a9&token=a4ba1ac9f88ac722b1d986991d352c3b641cfa88ae3986e30fbbb9baa5e85529", "")
+    .map(res => res.json())
+    .map(data => {
+      console.log("Vote for cart" + data);
+      return data;
+    })
+    .catch(this.handleErrors);
+  }
+
+  unvote(cardId, memberId) {
+    console.log("API DEL to vote for a book...");
+    return this._http.delete("https://api.trello.com/1/cards/" + cardId + "/membersVoted/"+ memberId +"?key=990762e5cb22372d9d958e72572863a9&token=a4ba1ac9f88ac722b1d986991d352c3b641cfa88ae3986e30fbbb9baa5e85529")
+    .map(res => res.json())
+    .map(data => {
+      console.log("Unvote for cart" + data);
+      return data;
+    })
+    .catch(this.handleErrors);
+  }
+
   getHeaders() {
     let headers = new Headers();
     headers.append("Content-Type", "application/json");
