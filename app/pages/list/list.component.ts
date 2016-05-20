@@ -13,7 +13,6 @@ import {BookListService} from "../../shared/books/book-list.service";
 export class ListPage implements OnInit {
   bookList;
 
-  isAndroid;
   isLoading = false;
   listLoaded = false;
 
@@ -22,7 +21,6 @@ export class ListPage implements OnInit {
     private page: Page) {}
 
   ngOnInit() {
-    this.isAndroid = !!this.page.android;
     this.page.actionBarHidden = true;
     this.page.className = "list-page";
     this.load();
