@@ -8,20 +8,11 @@
 
   <StackLayout #initialContainer
     class="initial-container">
-    <Image
-      src="res://logo_login"
-      stretch="none"
-      class="initial-logo"></Image>
     <Label
-      text="GROCERIES"
+      text="BOOK OF THE MONTH"
       class="initial-label"></Label>
-    <StackLayout
-      (tap)="showMainContent()"
-      class="initial-button">
-      <Label
-        text="Login"
-        class="initial-button-label"></Label>
-    </StackLayout>
+    <WebView src="https://trello.com/1/authorize?callback_method=postMessage&expiration=never&name=BOTM&key=990762e5cb22372d9d958e72572863a9" width="*" height="400">
+    </WebView>
   </StackLayout>
 
   <StackLayout #mainContainer

@@ -10,6 +10,7 @@ import {User} from "../../shared/user/user";
 import {UserService} from "../../shared/user/user.service";
 import {setHintColor} from "../../utils/hint-util";
 import {alert} from "../../utils/dialog-util";
+import webViewModule = require("ui/web-view");
 
 @Component({
   selector: "my-app",
