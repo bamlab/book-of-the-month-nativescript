@@ -1,14 +1,8 @@
 import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {Router} from "@angular/router-deprecated";
-import {Color} from "color";
 import {action} from "ui/dialogs";
 import {Page} from "ui/page";
-import {TextField} from "ui/text-field";
-import {Grocery} from "../../shared/grocery/grocery";
 import {BookListService} from "../../shared/books/book-list.service";
-import {alert} from "../../utils/dialog-util";
-import {setHintColor} from "../../utils/hint-util";
-var socialShare = require("nativescript-social-share");
 
 @Component({
   selector: "list",
@@ -18,14 +12,10 @@ var socialShare = require("nativescript-social-share");
 })
 export class ListPage implements OnInit {
   bookList;
-  grocery: string = "";
 
   isAndroid;
-  isShowingRecent = false;
   isLoading = false;
   listLoaded = false;
-
-  @ViewChild("groceryTextField") groceryTextField: ElementRef;
 
   constructor(private _router: Router,
     private _bookListService: BookListService,
