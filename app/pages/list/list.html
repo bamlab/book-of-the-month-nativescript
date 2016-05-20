@@ -1,0 +1,110 @@
+<GridLayout rows="auto, auto, *">
+
+  <!-- Row 1: The custom action bar -->
+  <GridLayout
+    row="0"
+    columns="44, *, 44"
+    class="action-bar-custom">
+    <Label
+      col="1"
+      text="Groceries"
+      class="action-bar-label"></Label>
+    
+    <!-- Wrap the image in a StackLayout to give it a bigger tap target -->
+    <StackLayout
+      col="2"
+      (tap)="showMenu()">
+      <Image
+        src="res://menu"
+        stretch="none"
+        class="action-bar-menu-image"></Image>
+    </StackLayout>
+  </GridLayout>
+
+  <!-- Row 2: The text field to add groceries, and recent button -->
+  <GridLayout
+    row="1"
+    columns="auto, *, auto"
+    [backgroundColor]="isShowingRecent ? '#BBC169' : '#CB1D00'"
+    class="add-bar">
+    <Image
+      col="0"
+      [src]="isShowingRecent ? 'res://recent' : 'res://add'"
+      (tap)="add()"></Image>
+    <TextField #groceryTextField
+      col="1"
+      [(ngModel)]="grocery"
+      (loaded)="setTextFieldHintColor(groceryTextField)"
+      [hint]="isAndroid ? 'ADD A GROCERY' : 'Add a grocery'"
+      returnKeyType="done"
+      *ngIf="!isShowingRecent"
+      (returnPress)="add()"></TextField>
+    <Label
+      col="1"
+      text="Recent items"
+      *ngIf="isShowingRecent"
+      class="add-bar-recent-label"></Label>
+   <Label
+     col="2"
+     class="add-bar-recent-toggle"
+     [text]="isShowingRecent ? 'Done' : 'Recent'"
+     (tap)="toggleRecent()"></Label>
+  </GridLayout>
+
+  <!-- Row 3: The main grocery list view -->
+  <ListView
+    row="2"
+    [items]="groceryList"
+    class="main-grocery-list"
+    [class.visible]="listLoaded"
+    [visibility]="isShowingRecent ? 'collapse' : 'visible'">
+    <template let-item="item">
+      <GridLayout
+        columns="auto, *, auto"
+        class="grocery-list-item-container"
+        [opacity]="item.done ? '0.8' : '1'">
+        <Image
+          col="0"
+          [src]="item.done ? 'res://checked' : 'res://unchecked'"
+          class="grocery-list-check-box"
+          (tap)="toggleDone(item)"></Image>
+        <Label
+          col="1"
+          [text]="item.name"
+          [class.line-through]="item.done"></Label>
+        <StackLayout
+          col="2"
+          class="delete-container"
+          (tap)="delete(item)">
+          <Image src="res://delete"></Image>
+        </StackLayout>
+      </GridLayout>
+    </template>
+  </ListView>
+
+  <!-- Row 3 (initially hidden): The recently deleted grocery list -->
+  <ListView
+    row="2"
+    [items]="history"
+    *ngIf="isShowingRecent">
+    <template let-item="item">
+      <GridLayout columns="auto, *" class="grocery-list-item-container">
+        <Image
+          col="0"
+          (tap)="toggleDoneHistory(item)"
+          [src]="item.done ? 'res://selected' : 'res://nonselected'"
+          class="grocery-list-check-box"></Image>
+        <Label
+          col="1"
+          [text]="item.name"></Label>
+      </GridLayout>
+    </template>
+  </ListView>
+
+  <ActivityIndicator
+    [busy]="isLoading"
+    row="2"
+    horizontalAlignment="center"
+    verticalAlignment="center"></ActivityIndicator>
+
+</GridLayout>
