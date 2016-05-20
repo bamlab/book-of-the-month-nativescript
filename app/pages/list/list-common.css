@@ -1,3 +1,26 @@
+.content-container {
+  background-color: white;
+  orientation: horizontal;
+}
+
+.header-container {
+  background-color: white;
+  orientation: horizontal;
+}
+
+.cover {
+  height:200;
+  width:100;
+}
+
+.description {
+  color: black;
+}
+
+.list-container {
+  background-color: yellow;
+}
+
 .action-bar-custom {
   color: white;
   padding-top: 26;
