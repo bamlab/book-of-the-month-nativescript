@@ -10,58 +10,11 @@ import "rxjs/add/operator/map";
 export class UserService {
   constructor(private _http: Http) {}
 
-  register(user: User) {
-    let headers = new Headers();
-    headers.append("Content-Type", "application/json");
-
-    return this._http.post(
-      Config.apiUrl + "Users",
-      JSON.stringify({
-        Username: user.email,
-        Email: user.email,
-        Password: user.password
-      }),
-      { headers: headers }
-    )
-    .catch(this.handleErrors);
+  storeToken(token) {
+    Config.token = token;
   }
 
-  login(user: User) {
-    let headers = new Headers();
-    headers.append("Content-Type", "application/json");
-
-    return this._http.post(
-      Config.apiUrl + "oauth/token",
-      JSON.stringify({
-        username: user.email,
-        password: user.password,
-        grant_type: "password"
-      }),
-      { headers: headers }
-    )
-    .map(response => response.json())
-    .do(data => {
-      Config.token = data.Result.access_token;
-    })
-    .catch(this.handleErrors);
-  }
-
-  resetPassword(email) {
-    let headers = new Headers();
-    headers.append("Content-Type", "application/json");
-
-    return this._http.post(
-      Config.apiUrl + "Users/resetpassword",
-      JSON.stringify({
-        Email: email
-      }),
-      { headers: headers }
-    )
-    .catch(this.handleErrors);
-  }
-
-  handleErrors(error: Response) {
-    console.log(JSON.stringify(error.json()));
-    return Observable.throw(error);
+  getToken(token) {
+    return Config.token;
   }
 }
