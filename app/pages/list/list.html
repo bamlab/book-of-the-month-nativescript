@@ -42,7 +42,7 @@
               ></Label>
             <Button
                 class="button"
-                text="Voter"
+                [text]="'Voter (' + item.idMembersVoted.length + ')'"
                 (tap)="toggleVote(item)"
              ></Button>
           </StackLayout>

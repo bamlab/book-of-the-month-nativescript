@@ -69,11 +69,15 @@ export class ListPage implements OnInit {
         if (card.idMembersVoted.indexOf(member.id) !== -1) {
           console.log('Unvote');
           this._bookListService.unvote(card.id, member.id)
-          .subscribe();
+          .subscribe(() => {
+            card.idMembersVoted.splice(card.idMembersVoted.indexOf(member.id), 1);
+          });
         } else {
           console.log('Vote');
           this._bookListService.vote(card.id, member.id)
-          .subscribe();
+          .subscribe(() => {
+            card.idMembersVoted.push(member.id);
+          });
         }
       });
 

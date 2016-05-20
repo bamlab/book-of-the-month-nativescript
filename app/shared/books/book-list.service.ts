@@ -5,6 +5,8 @@ import {Observable} from "rxjs/Rx";
 import "rxjs/add/operator/map";
 import 'rxjs/add/observable/from';
 
+// Config.token = "a4ba1ac9f88ac722b1d986991d352c3b641cfa88ae3986e30fbbb9baa5e85529";
+
 @Injectable()
 export class BookListService {
   constructor(private _http: Http) {}
@@ -55,7 +57,7 @@ export class BookListService {
   //TODO move this method to user.service.ts
   getAuthenticatedMember() {
     console.log("Get authenticated member info");
-    return this._http.get("https://api.trello.com/1/members/me?key=990762e5cb22372d9d958e72572863a9&token=a4ba1ac9f88ac722b1d986991d352c3b641cfa88ae3986e30fbbb9baa5e85529", {
+    return this._http.get("https://api.trello.com/1/members/me?key=990762e5cb22372d9d958e72572863a9&token=" + Config.token, {
       headers: this.getHeaders()
     })
     .map(res => res.json())
@@ -68,7 +70,7 @@ export class BookListService {
 
   vote(cardId, memberId) {
     console.log("API POST to vote for a book...");
-    return this._http.post("https://api.trello.com/1/cards/" + cardId + "/membersVoted?value="+ memberId +"&key=990762e5cb22372d9d958e72572863a9&token=a4ba1ac9f88ac722b1d986991d352c3b641cfa88ae3986e30fbbb9baa5e85529", "")
+    return this._http.post("https://api.trello.com/1/cards/" + cardId + "/membersVoted?value="+ memberId +"&key=990762e5cb22372d9d958e72572863a9&token=" + Config.token, "")
     .map(res => res.json())
     .map(data => {
       console.log("Vote for cart" + data);
@@ -79,7 +81,7 @@ export class BookListService {
 
   unvote(cardId, memberId) {
     console.log("API DEL to vote for a book...");
-    return this._http.delete("https://api.trello.com/1/cards/" + cardId + "/membersVoted/"+ memberId +"?key=990762e5cb22372d9d958e72572863a9&token=a4ba1ac9f88ac722b1d986991d352c3b641cfa88ae3986e30fbbb9baa5e85529")
+    return this._http.delete("https://api.trello.com/1/cards/" + cardId + "/membersVoted/"+ memberId +"?key=990762e5cb22372d9d958e72572863a9&token=" + Config.token)
     .map(res => res.json())
     .map(data => {
       console.log("Unvote for cart" + data);
