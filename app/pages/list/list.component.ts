@@ -5,7 +5,7 @@ import {action} from "ui/dialogs";
 import {Page} from "ui/page";
 import {TextField} from "ui/text-field";
 import {Grocery} from "../../shared/grocery/grocery";
-import {GroceryListService} from "../../shared/grocery/grocery-list.service";
+import {BookListService} from "../../shared/books/book-list.service";
 import {alert} from "../../utils/dialog-util";
 import {setHintColor} from "../../utils/hint-util";
 var socialShare = require("nativescript-social-share");
@@ -14,11 +14,10 @@ var socialShare = require("nativescript-social-share");
   selector: "list",
   templateUrl: "pages/list/list.html",
   styleUrls: ["pages/list/list-common.css", "pages/list/list.css"],
-  providers: [GroceryListService]
+  providers: [BookListService]
 })
 export class ListPage implements OnInit {
-  groceryList: Array<Grocery>;
-  history: Array<Grocery>;
+  bookList;
   grocery: string = "";
 
   isAndroid;
@@ -29,7 +28,7 @@ export class ListPage implements OnInit {
   @ViewChild("groceryTextField") groceryTextField: ElementRef;
 
   constructor(private _router: Router,
-    private _groceryListService: GroceryListService,
+    private _bookListService: BookListService,
     private page: Page) {}
 
   ngOnInit() {
@@ -39,127 +38,29 @@ export class ListPage implements OnInit {
     this.load();
   }
 
-  setTextFieldHintColor(textField) {
-    setHintColor({
-      view: <TextField>textField,
-      color: new Color("white") 
-    });
-  }
-
   load() {
     this.isLoading = true;
-    this.groceryList = [];
-    this.history = [];
+    this.bookList = [];
 
-    this._groceryListService.load()
-      .subscribe(loadedGroceries => {
-        loadedGroceries.forEach((groceryObject: Grocery) => {
-          if (groceryObject.deleted) {
-            this.history.unshift(groceryObject);
-          } else {
-            this.groceryList.unshift(groceryObject);
-          }
-        });
+    this._bookListService.load()
+      .subscribe(books => {
+        console.log("loaded " + books.length + "books");
+        this.bookList = books;
         this.isLoading = false;
         this.listLoaded = true;
-      });
-  }
-
-  add() {
-    if (this.isShowingRecent) {
-      return;
-    }
-
-    if (this.grocery.trim() === "") {
-      alert("Enter a grocery item");
-      return;
-    }
-
-    // Dismiss the keyboard
-    let textField = <TextField>this.groceryTextField.nativeElement;
-    textField.dismissSoftInput();
-
-    this._groceryListService.add(this.grocery)
-      .subscribe(
-        groceryObject => {
-          this.groceryList.unshift(groceryObject);
-          this.grocery = "";
-        },
-        () => {
-          alert("An error occurred while adding an item to your list.");
-          this.grocery = "";
-        }
-      )
-  }
-
-  toggleDone(grocery: Grocery) {
-    this.isLoading = true;
-    this._groceryListService.toggleDoneFlag(grocery)
-      .subscribe(() => {
-        grocery.done = !grocery.done;
-        this.isLoading = false;
-      }, () => {
-        alert("An error occurred managing your grocery list.");
-        this.isLoading = false;
-      });
-  }
-
-  toggleDoneHistory(grocery: Grocery) {
-    grocery.done = !grocery.done;
-  }
-
-  toggleRecent() {
-    let groceriesToRestore = []
-    this.history.forEach((grocery) => {
-      if (grocery.done) {
-        groceriesToRestore.push(grocery);
-      }
-    });
-
-    if (!this.isShowingRecent || groceriesToRestore.length == 0) {
-      this.isShowingRecent = !this.isShowingRecent;
-      return;
-    }
-
-    this.isLoading = true;
-    this._groceryListService.restore(groceriesToRestore)
-      .subscribe(() => {
-        this.isShowingRecent = false;
-        this.load();
-      });
-  }
-
-  delete(grocery: Grocery) {
-    this._groceryListService.setDeleteFlag(grocery)
-      .subscribe(() => {
-        var index = this.groceryList.indexOf(grocery);
-        grocery.deleted = true;
-        this.groceryList.splice(index, 1);
-        this.history.push(grocery);
       });
   }
 
   showMenu() {
     action({
       message: "What would you like to do?",
-      actions: ["Share", "Log Off"],
+      actions: ["Log Off"],
       cancelButtonText: "Cancel"
     }).then((result) => {
-      if (result == "Share") {
-        this.share();
-      } else if (result == "Log Off") {
+      if (result == "Log Off") {
         this.logoff();
       }
     });
-  }
-
-  share() {
-    let list = [];
-    for (let i = 0, size = this.groceryList.length; i < size ; i++) {
-      list.push(this.groceryList[i].name);
-    }
-    let listString = list.join(", ").trim();
-    socialShare.shareText(listString);
   }
 
   logoff() {
