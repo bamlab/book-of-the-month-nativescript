@@ -29,26 +29,30 @@
     [class.visible]="listLoaded"
     [visibility]="isShowingRecent ? 'collapse' : 'visible'">
     <template let-item="item">
-      <GridLayout
+      <StackLayout
         columns="auto, *, auto"
-        class="grocery-list-item-container"
+        class="list-container"
         [opacity]="item.done ? '0.8' : '1'">
-        <Image
-          col="0"
-          [src]="item.done ? 'res://checked' : 'res://unchecked'"
-          class="grocery-list-check-box"
-          ></Image>
-        <Label
-          col="1"
-          [text]="item.name"
-          [class.line-through]="item.done"></Label>
-        <StackLayout
-          col="2"
-          class="delete-container"
-          >
-          <Image src="res://delete"></Image>
-        </StackLayout>
-      </GridLayout>
+          <StackLayout
+            class="header-container"
+            >
+            <Label
+              col="1"
+              [text]="item.name"
+              ></Label>
+          </StackLayout>
+          <StackLayout
+            class="content-container"
+            >
+            <Image
+              [src]="item.done ? 'res://checked' : 'res://unchecked'"
+              class="cover"
+              ></Image>
+            <Label
+              text="Description"
+              class="description"></Label>
+          </StackLayout>
+      </StackLayout>
     </template>
   </ListView>
 
